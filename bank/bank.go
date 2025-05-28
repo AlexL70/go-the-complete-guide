@@ -32,8 +32,21 @@ func main() {
 				accountBalance += depositAmount
 				fmt.Printf("You have successfully deposited $%.2f. New balance is: $%.2f\n", depositAmount, accountBalance)
 			}
+		case 3:
+			var withdrawAmount float64
+			fmt.Println("Enter the amount to withdraw:")
+			fmt.Scanln(&withdrawAmount)
+			if withdrawAmount <= 0 {
+				fmt.Println("Withdrawal amount must be greater than zero.")
+			} else if withdrawAmount > accountBalance {
+				fmt.Println("Insufficient funds for this withdrawal.")
+			} else {
+				accountBalance -= withdrawAmount
+				fmt.Printf("You have successfully withdrawn $%.2f. New balance is: $%.2f\n", withdrawAmount, accountBalance)
+			}
 		default:
 			fmt.Println("Thank you for using the Bank Management System. Goodbye!")
+			return
 		}
 	}
 }
