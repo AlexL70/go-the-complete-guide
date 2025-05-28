@@ -18,11 +18,22 @@ func main() {
 	if choice < 1 || choice > 4 {
 		fmt.Println("Invalid choice. Please enter a number between 1 and 4.")
 		return
-	}
-	switch choice {
-	case 1:
-		fmt.Printf("Your current balance is: $%.2f\n", accountBalance)
-	default:
-		fmt.Println("Thank you for using the Bank Management System. Goodbye!")
+	} else {
+		switch choice {
+		case 1:
+			fmt.Printf("Your current balance is: $%.2f\n", accountBalance)
+		case 2:
+			var depositAmount float64
+			fmt.Println("Enter the amount to deposit:")
+			fmt.Scanln(&depositAmount)
+			if depositAmount <= 0 {
+				fmt.Println("Deposit amount must be greater than zero.")
+			} else {
+				accountBalance += depositAmount
+				fmt.Printf("You have successfully deposited $%.2f. New balance is: $%.2f\n", depositAmount, accountBalance)
+			}
+		default:
+			fmt.Println("Thank you for using the Bank Management System. Goodbye!")
+		}
 	}
 }
