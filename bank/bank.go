@@ -2,33 +2,15 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
+
+	"example.com/bank/fileops"
 )
 
 const accountBalanceFile = "balance.txt"
 
-func getFloatFromFile(fileName string) (float64, error) {
-	data, err := os.ReadFile(fileName)
-	if err != nil {
-		return 0, fmt.Errorf("Error reading file: %v", err)
-	}
-	var value float64
-	value, err = strconv.ParseFloat(string(data), 64)
-	if err != nil {
-		return 0, fmt.Errorf("Error parsing float from file: %v", err)
-	}
-	return value, nil
-}
-
-func writeFloatToFile(value float64, fileName string) {
-	balanceStr := fmt.Sprint(value)
-	os.WriteFile(fileName, []byte(balanceStr), 0644)
-}
-
 func main() {
 	var accountBalance float64 = 1000.00 // Initial balance
-	var savedBalance, err = getFloatFromFile(accountBalanceFile)
+	var savedBalance, err = fileops.GetFloatFromFile(accountBalanceFile)
 	if err != nil {
 		// panic(err)
 		fmt.Println(err)
@@ -59,7 +41,7 @@ MAIN_LOOP:
 					fmt.Println("Deposit amount must be greater than zero.")
 				} else {
 					accountBalance += depositAmount
-					writeFloatToFile(accountBalance, accountBalanceFile)
+					fileops.WriteFloatToFile(accountBalance, accountBalanceFile)
 					fmt.Printf("You have successfully deposited $%.2f. New balance is: $%.2f\n", depositAmount, accountBalance)
 				}
 			case 3:
@@ -72,7 +54,7 @@ MAIN_LOOP:
 					fmt.Println("Insufficient funds for this withdrawal.")
 				} else {
 					accountBalance -= withdrawAmount
-					writeFloatToFile(accountBalance, accountBalanceFile)
+					fileops.WriteFloatToFile(accountBalance, accountBalanceFile)
 					fmt.Printf("You have successfully withdrawn $%.2f. New balance is: $%.2f\n", withdrawAmount, accountBalance)
 				}
 			default:
