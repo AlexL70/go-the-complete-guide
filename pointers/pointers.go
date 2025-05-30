@@ -8,10 +8,10 @@ func main() {
 
 	fmt.Printf("Age: %d\n", *agePointer)
 	fmt.Printf("Age Pointer: %p\n", agePointer)
-	getAdultYears(agePointer) // pass pointer to function
-	fmt.Printf("Adult Years: %d\n", *agePointer)
+	editAgeToAdultYears(agePointer)      // pass pointer to function
+	fmt.Printf("Adult Years: %d\n", age) // print updated age
 }
 
-func getAdultYears(age *int) {
+func editAgeToAdultYears(age *int) {
 	*age -= 18 // calculate adult years and update the value
 }
