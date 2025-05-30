@@ -11,12 +11,12 @@ const accountBalanceFile = "balance.txt"
 func getBalanceFromFile() (float64, error) {
 	data, err := os.ReadFile(accountBalanceFile)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("Error reading balance file: %v", err)
 	}
 	var balance float64
 	balance, err = strconv.ParseFloat(string(data), 64)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("Error parsing balance from file: %v", err)
 	}
 	return balance, nil
 }
@@ -30,7 +30,7 @@ func main() {
 	var accountBalance float64 = 1000.00 // Initial balance
 	var savedBalance, err = getBalanceFromFile()
 	if err != nil {
-		fmt.Println(fmt.Errorf("Error reading balance from file: %v", err))
+		fmt.Println(err)
 		fmt.Println("No previous balance found, starting with default balance of $1000.00")
 	} else {
 		accountBalance = savedBalance
