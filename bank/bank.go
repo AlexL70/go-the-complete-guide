@@ -41,14 +41,8 @@ func main() {
 	fmt.Println("Welcome to the Bank Management System")
 MAIN_LOOP:
 	for {
-		fmt.Println("What would you like to do?")
-		fmt.Println("1. Check balance")
-		fmt.Println("2. Deposit money")
-		fmt.Println("3. Withdraw money")
-		fmt.Println("4. Exit")
-
+		presentOptions()
 		var choice int
-		fmt.Println("Please enter your choice (1-4):")
 		fmt.Scanln(&choice)
 		if choice < 1 || choice > 4 {
 			fmt.Println("Invalid choice. Please enter a number between 1 and 4.")
