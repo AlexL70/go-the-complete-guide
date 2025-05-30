@@ -30,6 +30,7 @@ func main() {
 	var accountBalance float64 = 1000.00 // Initial balance
 	var savedBalance, err = getBalanceFromFile()
 	if err != nil {
+		// panic(err)
 		fmt.Println(err)
 		fmt.Println("No previous balance found, starting with default balance of $1000.00")
 	} else {
