@@ -3,15 +3,39 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
+
+const accountBalanceFile = "balance.txt"
+
+func getBalanceFromFile() (float64, error) {
+	data, err := os.ReadFile(accountBalanceFile)
+	if err != nil {
+		return 0, err
+	}
+	var balance float64
+	balance, err = strconv.ParseFloat(string(data), 64)
+	if err != nil {
+		return 0, err
+	}
+	return balance, nil
+}
 
 func writeBalanceToFile(balance float64) {
 	balanceStr := fmt.Sprint(balance)
-	os.WriteFile("balance.txt", []byte(balanceStr), 0644)
+	os.WriteFile(accountBalanceFile, []byte(balanceStr), 0644)
 }
 
 func main() {
 	var accountBalance float64 = 1000.00 // Initial balance
+	var savedBalance, err = getBalanceFromFile()
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error reading balance from file: %v", err))
+		fmt.Println("No previous balance found, starting with default balance of $1000.00")
+	} else {
+		accountBalance = savedBalance
+		fmt.Printf("Previous balance loaded: $%.2f\n", accountBalance)
+	}
 
 	fmt.Println("Welcome to the Bank Management System")
 MAIN_LOOP:
