@@ -11,6 +11,10 @@ import (
 	"example.com/note/todo"
 )
 
+type Saver interface {
+	Save() error
+}
+
 func main() {
 	title, content, err := getNoteData()
 	if err != nil {
