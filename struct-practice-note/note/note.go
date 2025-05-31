@@ -10,9 +10,9 @@ import (
 )
 
 type Note struct {
-	title     string
-	content   string
-	createdAt time.Time
+	Title     string
+	Content   string
+	CreatedAt time.Time
 }
 
 func New(title, content string) (Note, error) {
@@ -20,18 +20,18 @@ func New(title, content string) (Note, error) {
 		return Note{}, errors.New("title and content cannot be empty")
 	}
 	return Note{
-		title:     title,
-		content:   content,
-		createdAt: time.Now(),
+		Title:     title,
+		Content:   content,
+		CreatedAt: time.Now(),
 	}, nil
 }
 
 func (n Note) Display() {
-	fmt.Printf("\n\nMy Note:\nTitle: %s\nContent: %s\nCreated At: %s\n", n.title, n.content, n.createdAt.Format(time.RFC1123))
+	fmt.Printf("\n\nMy Note:\nTitle: %s\nContent: %s\nCreated At: %s\n", n.Title, n.Content, n.CreatedAt.Format(time.RFC1123))
 }
 
 func (n Note) Save() error {
-	fileName := strings.ReplaceAll(n.title, " ", "_")
+	fileName := strings.ReplaceAll(n.Title, " ", "_")
 	fileName = strings.ToLower(fileName) + ".json"
 	jsonContent, err := json.MarshalIndent(n, "", "  ")
 	if err != nil {
