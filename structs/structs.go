@@ -12,10 +12,17 @@ type User struct {
 	CreatedAt time.Time
 }
 
-func (u *User) printUserData() {
+func (u User) printUserData() {
 	fmt.Printf("User: %s %s, Birth Date: %s, Created At: %s\n",
-		// Pointers to structs allow accessing fields with or without dereferencing
-		(*u).FirstName, u.LastName, u.BirthDate, u.CreatedAt.Format(time.RFC3339))
+		u.FirstName, u.LastName, u.BirthDate, u.CreatedAt.Format(time.RFC3339))
+}
+
+// To update structure fields, we must use a pointer receiver
+// otherwise we will modify a copy of the struct and the original will remain unchanged.
+func (u *User) clearUserName() {
+	// Pointers to structs allow accessing fields with or without dereferencing
+	(*u).FirstName = ""
+	u.LastName = ""
 }
 
 func main() {
@@ -30,6 +37,8 @@ func main() {
 		CreatedAt: time.Now(),
 	}
 
+	appUser.printUserData()
+	appUser.clearUserName()
 	appUser.printUserData()
 }
 
