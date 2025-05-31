@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+
+	"example.com/note/note" // Adjust the import path as necessary
 )
 
 func main() {
@@ -11,7 +13,12 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println(title, content)
+	note, err := note.New(title, content)
+	if err != nil {
+		fmt.Println("Error creating note:", err)
+		return
+	}
+	fmt.Println(note)
 }
 
 func getNoteData() (string, string, error) {
