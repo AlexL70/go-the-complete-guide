@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"example.com/note/note" // Adjust the import path as necessary
+	"example.com/note/note"
+	"example.com/note/todo"
 )
 
 func main() {
@@ -21,6 +22,16 @@ func main() {
 		fmt.Println("Error creating note:", err)
 		return
 	}
+	todoText, err := getUserInput("Enter a todo text: ")
+	if err != nil {
+		fmt.Println("Error reading todo data:", err)
+		return
+	}
+	todo, err := todo.New(todoText)
+	if err != nil {
+		fmt.Println("Error creating todo:", err)
+		return
+	}
 	note.Display()
 	err = note.Save()
 	if err != nil {
@@ -28,6 +39,13 @@ func main() {
 		return
 	}
 	fmt.Println("Note saved successfully!")
+	todo.Display()
+	err = todo.Save()
+	if err != nil {
+		fmt.Println("Error saving todo:", err)
+		return
+	}
+	fmt.Println("Todo saved successfully!")
 }
 
 func getNoteData() (string, string, error) {
