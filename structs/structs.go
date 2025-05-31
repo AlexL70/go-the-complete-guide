@@ -12,6 +12,12 @@ type User struct {
 	CreatedAt time.Time
 }
 
+func (u *User) printUserData() {
+	fmt.Printf("User: %s %s, Birth Date: %s, Created At: %s\n",
+		// Pointers to structs allow accessing fields with or without dereferencing
+		(*u).FirstName, u.LastName, u.BirthDate, u.CreatedAt.Format(time.RFC3339))
+}
+
 func main() {
 	userFirstName := getUserData("Please enter your first name: ")
 	userLastName := getUserData("Please enter your last name: ")
@@ -24,13 +30,7 @@ func main() {
 		CreatedAt: time.Now(),
 	}
 
-	printUserData(&appUser)
-}
-
-func printUserData(user *User) {
-	fmt.Printf("User: %s %s, Birth Date: %s, Created At: %s\n",
-		// Pointers to structs allow accessing fields with or without dereferencing
-		(*user).FirstName, user.LastName, user.BirthDate, user.CreatedAt.Format(time.RFC3339))
+	appUser.printUserData()
 }
 
 func getUserData(promptText string) string {
