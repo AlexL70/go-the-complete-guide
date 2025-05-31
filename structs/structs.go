@@ -24,13 +24,13 @@ func main() {
 		CreatedAt: time.Now(),
 	}
 
-	// ... do something awesome with that gathered data
-	printUserData(appUser)
+	printUserData(&appUser)
 }
 
-func printUserData(user User) {
+func printUserData(user *User) {
 	fmt.Printf("User: %s %s, Birth Date: %s, Created At: %s\n",
-		user.FirstName, user.LastName, user.BirthDate, user.CreatedAt.Format(time.RFC3339))
+		// Pointers to structs allow accessing fields with or without dereferencing
+		(*user).FirstName, user.LastName, user.BirthDate, user.CreatedAt.Format(time.RFC3339))
 }
 
 func getUserData(promptText string) string {
