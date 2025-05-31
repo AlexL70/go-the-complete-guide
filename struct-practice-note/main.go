@@ -22,7 +22,12 @@ func main() {
 		return
 	}
 	note.Display()
-	note.Save()
+	err = note.Save()
+	if err != nil {
+		fmt.Println("Error saving note:", err)
+		return
+	}
+	fmt.Println("Note saved successfully!")
 }
 
 func getNoteData() (string, string, error) {

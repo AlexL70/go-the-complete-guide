@@ -1,6 +1,7 @@
 package note
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -31,6 +32,10 @@ func (n Note) Display() {
 
 func (n Note) Save() error {
 	fileName := strings.ReplaceAll(n.title, " ", "_")
-	fileName = strings.ToLower(fileName) + ".txt"
-	return os.WriteFile(fileName, []byte(n.content), 0644)
+	fileName = strings.ToLower(fileName) + ".json"
+	jsonContent, err := json.MarshalIndent(n, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(fileName, jsonContent, 0644)
 }
