@@ -37,19 +37,17 @@ func main() {
 		return
 	}
 	note.Display()
-	err = note.Save()
-	if err != nil {
-		fmt.Println("Error saving note:", err)
-		return
-	}
-	fmt.Println("Note saved successfully!")
+	saveData(note)
 	todo.Display()
-	err = todo.Save()
+	saveData(todo)
+}
+
+func saveData(data Saver) {
+	err := data.Save()
 	if err != nil {
-		fmt.Println("Error saving todo:", err)
-		return
+		fmt.Println(fmt.Errorf("failed to save %T: %w", data, err))
 	}
-	fmt.Println("Todo saved successfully!")
+	fmt.Printf("%T saved successfully!\n", data)
 }
 
 func getNoteData() (string, string, error) {
