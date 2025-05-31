@@ -13,12 +13,24 @@ type User struct {
 }
 
 func main() {
-	firstName := getUserData("Please enter your first name: ")
-	lastName := getUserData("Please enter your last name: ")
-	birthDate := getUserData("Please enter your birth date (MM/DD/YYYY): ")
+	userFirstName := getUserData("Please enter your first name: ")
+	userLastName := getUserData("Please enter your last name: ")
+	userBirthDate := getUserData("Please enter your birth date (MM/DD/YYYY): ")
+
+	var appUser User = User{
+		FirstName: userFirstName,
+		LastName:  userLastName,
+		BirthDate: userBirthDate,
+		CreatedAt: time.Now(),
+	}
 
 	// ... do something awesome with that gathered data
-	fmt.Println(firstName, lastName, birthDate)
+	printUserData(appUser)
+}
+
+func printUserData(user User) {
+	fmt.Printf("User: %s %s, Birth Date: %s, Created At: %s\n",
+		user.FirstName, user.LastName, user.BirthDate, user.CreatedAt.Format(time.RFC3339))
 }
 
 func getUserData(promptText string) string {
