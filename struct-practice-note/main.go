@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"os"
+	"strings"
 
 	"example.com/note/note" // Adjust the import path as necessary
 )
@@ -36,9 +39,13 @@ func getNoteData() (string, string, error) {
 func getUserInput(prompt string) (string, error) {
 	fmt.Print(prompt)
 	var value string
-	fmt.Scanln(&value)
+	reader := bufio.NewReader(os.Stdin)
+	value, err := reader.ReadString('\n')
+	if err != nil {
+		return "", fmt.Errorf("failed to read input: %w", err)
+	}
 	if value == "" {
 		return "", errors.New("Input cannot be empty")
 	}
-	return value, nil
+	return strings.TrimSuffix(strings.TrimSuffix(value, "\n"), "\r"), nil
 }
