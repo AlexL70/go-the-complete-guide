@@ -13,6 +13,12 @@ type User struct {
 	createdAt time.Time
 }
 
+type Admin struct {
+	User
+	email    string
+	password string
+}
+
 // Constructors are not a common pattern in Go, but we can use methods to initialize structs.
 func New(firstName, lastName, birthDate string) (*User, error) {
 	if firstName == "" || lastName == "" {
@@ -28,6 +34,19 @@ func New(firstName, lastName, birthDate string) (*User, error) {
 		birthDate: date,
 		createdAt: time.Now(),
 	}, nil
+}
+
+func NewAdmin(email, password string) Admin {
+	return Admin{
+		email:    email,
+		password: password,
+		User: User{
+			firstName: "ADMIN",
+			lastName:  "ADMIN",
+			birthDate: time.Now(), // Default birth date, can be changed later
+			createdAt: time.Now(),
+		},
+	}
 }
 
 func (u User) PrintUserData() {

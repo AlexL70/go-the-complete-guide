@@ -20,6 +20,9 @@ func main() {
 	appUser.PrintUserData()
 	appUser.ClearUserName()
 	appUser.PrintUserData()
+
+	admin := user.NewAdmin("someemail@somesurl.com", "verySecureP@ssw0rd")
+	admin.PrintUserData()
 }
 
 func getUserData(promptText string) string {
