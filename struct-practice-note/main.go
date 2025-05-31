@@ -15,12 +15,17 @@ type Saver interface {
 	Save() error
 }
 
-type Outputable interface {
+type Outputtable interface {
 	Display()
 	Saver
 }
 
 func main() {
+	printSomething("Welcome to the Note and Todo App!")
+	printSomething(123.45)
+	printSomething(true)
+	printSomething([]string{"Hello", "World"})
+
 	title, content, err := getNoteData()
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -46,7 +51,11 @@ func main() {
 	output(todo)
 }
 
-func output(data Outputable) {
+func printSomething(something any) {
+	fmt.Println(something)
+}
+
+func output(data Outputtable) {
 	data.Display()
 	saveData(data)
 }
