@@ -53,6 +53,12 @@ func main() {
 }
 
 func printSomething(something any) {
+	// Inverse if boolean
+	boolValue, ok := something.(bool)
+	if ok {
+		something = !boolValue
+	}
+
 	switch v := something.(type) {
 	case int:
 		fmt.Printf("Printing integer: %d\n", v)
