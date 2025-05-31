@@ -18,7 +18,7 @@ func main() {
 		fmt.Println("Error creating note:", err)
 		return
 	}
-	fmt.Println(note)
+	note.Display()
 }
 
 func getNoteData() (string, string, error) {
