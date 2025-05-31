@@ -22,6 +22,7 @@ func main() {
 		return
 	}
 	note.Display()
+	note.Save()
 }
 
 func getNoteData() (string, string, error) {
