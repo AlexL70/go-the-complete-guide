@@ -24,6 +24,7 @@ func main() {
 	printSomething("Welcome to the Note and Todo App!")
 	printSomething(123.45)
 	printSomething(true)
+	printSomething(-123)
 	printSomething([]string{"Hello", "World"})
 
 	title, content, err := getNoteData()
@@ -52,7 +53,16 @@ func main() {
 }
 
 func printSomething(something any) {
-	fmt.Println(something)
+	switch v := something.(type) {
+	case int:
+		fmt.Printf("Printing integer: %d\n", v)
+	case float64:
+		fmt.Printf("Printing float: %.2f\n", v)
+	case bool:
+		fmt.Printf("Printing boolean: %t\n", v)
+	default:
+		fmt.Println(something)
+	}
 }
 
 func output(data Outputtable) {
