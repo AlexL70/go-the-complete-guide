@@ -12,4 +12,8 @@ func main() {
 	// Slicing the array
 	featuredPrices := prices[1:3] // Slicing from index 1 to 2 (exclusive)
 	fmt.Println("Featured prices:", featuredPrices)
+	toTheEnd := prices[1:] // Slicing from index 2 to the end
+	fmt.Println("Prices from index 1 to the end:", toTheEnd)
+	fromTheBeginning := prices[:3] // Slicing from the beginning to index 2 (exclusive)
+	fmt.Println("Prices from the beginning to index 2:", fromTheBeginning)
 }
