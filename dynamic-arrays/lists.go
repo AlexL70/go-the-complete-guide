@@ -1,0 +1,12 @@
+package main
+
+import "fmt"
+
+func main() {
+	prices := []float64{10.99, 12.49}
+	fmt.Println("Slice only first element:", prices[0:1])
+	// prices[2] = 15.99 // this will cause a runtime error instead we could use append
+	updatedPrices := append(prices, 15.99)
+	fmt.Println("Updated prices:", updatedPrices)
+	fmt.Println("Original prices:", prices)
+}
