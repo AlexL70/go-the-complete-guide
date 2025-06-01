@@ -2,6 +2,12 @@ package main
 
 import "fmt"
 
+type floatMap map[string]float64
+
+func (f floatMap) output() {
+	fmt.Println(f)
+}
+
 func main() {
 	userNames := make([]string, 6, 20)
 	// Fill in existing user names
@@ -24,7 +30,7 @@ func main() {
 	fmt.Println("Capacity of user names slice:", cap(userNames))
 
 	// Allocating maps
-	courseRatings := make(map[string]float64, 5) // Preallocate space for 5 course ratings
+	courseRatings := make(floatMap, 5) // Preallocate space for 5 course ratings
 	courseRatings["Go Programming"] = 4.5
 	courseRatings["Python Programming"] = 4.7
 	courseRatings["Java Programming"] = 4.2
@@ -33,6 +39,7 @@ func main() {
 	courseRatings["C++ Programming"] = 4.3
 	// And here the new space is allocated because the initial capacity is exceeded
 	courseRatings["Ruby Programming"] = 4.6
-	fmt.Println("Course ratings:", courseRatings)
+	fmt.Println("Course ratings:")
+	courseRatings.output()
 	fmt.Println("Total course ratings:", len(courseRatings))
 }
