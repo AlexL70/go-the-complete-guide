@@ -22,4 +22,17 @@ func main() {
 	// Still have te original capacity because enough space was allocated originally
 	// No new allocation happened
 	fmt.Println("Capacity of user names slice:", cap(userNames))
+
+	// Allocating maps
+	courseRatings := make(map[string]float64, 5) // Preallocate space for 5 course ratings
+	courseRatings["Go Programming"] = 4.5
+	courseRatings["Python Programming"] = 4.7
+	courseRatings["Java Programming"] = 4.2
+	courseRatings["JavaScript Programming"] = 4.8
+	// Go does not allocate new space yet for keys because 5 is the initial capacity
+	courseRatings["C++ Programming"] = 4.3
+	// And here the new space is allocated because the initial capacity is exceeded
+	courseRatings["Ruby Programming"] = 4.6
+	fmt.Println("Course ratings:", courseRatings)
+	fmt.Println("Total course ratings:", len(courseRatings))
 }
