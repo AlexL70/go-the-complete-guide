@@ -9,4 +9,6 @@ func main() {
 	updatedPrices := append(prices, 15.99)
 	fmt.Println("Updated prices:", updatedPrices)
 	fmt.Println("Original prices:", prices)
+	diminishingPrices := prices[1:]
+	fmt.Println("Diminishing prices:", diminishingPrices)
 }
