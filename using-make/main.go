@@ -5,7 +5,9 @@ import "fmt"
 type floatMap map[string]float64
 
 func (f floatMap) output() {
-	fmt.Println(f)
+	for key, value := range f {
+		fmt.Printf("%s: %.2f\n", key, value)
+	}
 }
 
 func main() {
@@ -22,12 +24,15 @@ func main() {
 	additionalNames := []string{"Alice", "Bob", "Charlie"}
 	// Append additional user names
 	userNames = append(userNames, additionalNames...)
-	fmt.Println("User names after appending additional names:", userNames)
-	fmt.Println("User names:", userNames)
+	fmt.Println("User names after appending additional names:")
+	for i, name := range userNames {
+		fmt.Printf("%d: %s\n", i+1, name)
+	}
 	fmt.Println("Total user names:", len(userNames))
 	// Still have te original capacity because enough space was allocated originally
 	// No new allocation happened
 	fmt.Println("Capacity of user names slice:", cap(userNames))
+	fmt.Println()
 
 	// Allocating maps
 	courseRatings := make(floatMap, 5) // Preallocate space for 5 course ratings
