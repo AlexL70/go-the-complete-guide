@@ -4,7 +4,9 @@ import "fmt"
 
 func main() {
 	numbers := []int{1, 2, 3}
-	transformed := transformNumbers(&numbers, ???) 
+	transformed := transformNumbers(&numbers, func(i int) int {
+		return i * 2
+	})
 	fmt.Println(transformed)
 }
 
