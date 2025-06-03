@@ -10,15 +10,17 @@ import (
 func main() {
 	taxRates := []float64{0.0, 0.07, 0.1, 0.15}
 	taxMap := make(map[string]prices.TaxIncludedPriceJob)
+	globalFm := filemanager.New("prices.txt", "tax_included_prices.json")
 
 	for _, taxRate := range taxRates {
-		job := prices.NewTaxIncludedPriceJob(taxRate)
+		fm := filemanager.New("prices.txt", fmt.Sprintf("prices_with_tax_%.0f.json", taxRate*100))
+		job := prices.NewTaxIncludedPriceJob(fm, taxRate)
 		job.Process()
 		fmt.Printf("Tax Rate: %.2f\n", taxRate)
 		fmt.Println("Price with taxes:", job.TaxIncludedPrices)
-		//filemanager.WriteJSON(job.TaxIncludedPrices, fmt.Sprintf("prices_with_tax_%.0f.json", taxRate*100))
+		job.IOManager.WriteResult(job.TaxIncludedPrices)
 		taxMap[fmt.Sprintf("%.2f", taxRate)] = *job
 	}
 	fmt.Println(taxMap)
-	filemanager.WriteJSON(taxMap, "tax_included_prices.json")
+	globalFm.WriteResult(taxMap)
 }
