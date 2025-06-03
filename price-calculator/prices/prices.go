@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"example.com/price-calculator/conversion"
 )
 
 type TaxIncludedPriceJob struct {
@@ -18,23 +20,26 @@ func (job *TaxIncludedPriceJob) LoadData() {
 		fmt.Println("Error opening file:", err)
 		return
 	}
+	defer file.Close()
 	scanner := bufio.NewScanner(file)
+	strPrices := []string{}
 	for scanner.Scan() {
-		var price float64
 		s := scanner.Text()
-		if _, err := fmt.Sscanf(s, "%f", &price); err == nil {
-			job.InputPrices = append(job.InputPrices, price)
-		} else {
-			fmt.Println("Error parsing price:", s)
-			file.Close()
-			return
-		}
+		strPrices = append(strPrices, s)
 	}
 	err = scanner.Err()
 	if err != nil {
 		fmt.Println("Error reading file:", err)
 	}
-	file.Close()
+	if len(strPrices) == 0 {
+		fmt.Println("No prices found in the file.")
+		return
+	}
+	job.InputPrices, err = conversion.StringToFloat64(strPrices)
+	if err != nil {
+		fmt.Println("Error converting prices:", err)
+		return
+	}
 }
 
 func (job *TaxIncludedPriceJob) Process() {
