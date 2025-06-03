@@ -9,7 +9,7 @@ import (
 type TaxIncludedPriceJob struct {
 	TaxRate           float64
 	InputPrices       []float64
-	TaxIncludedPrices map[string]float64
+	TaxIncludedPrices map[string]string
 }
 
 func (job *TaxIncludedPriceJob) LoadData() {
@@ -38,10 +38,11 @@ func (job *TaxIncludedPriceJob) LoadData() {
 }
 
 func (job *TaxIncludedPriceJob) Process() {
-	result := make(map[string]float64)
+	job.LoadData()
+	result := make(map[string]string)
 	for _, price := range job.InputPrices {
 		total := price * (1 + job.TaxRate)
-		result[fmt.Sprintf("%.2f", price)] = total
+		result[fmt.Sprintf("%.2f", price)] = fmt.Sprintf("%.2f", total)
 	}
 	job.TaxIncludedPrices = result
 }
@@ -50,6 +51,5 @@ func NewTaxIncludedPriceJob(taxRate float64) *TaxIncludedPriceJob {
 	job := &TaxIncludedPriceJob{
 		TaxRate: taxRate,
 	}
-	job.LoadData()
 	return job
 }
