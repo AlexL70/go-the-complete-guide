@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"example.com/price-calculator/cmdmanager"
 	"example.com/price-calculator/filemanager"
 	"example.com/price-calculator/prices"
 )
@@ -14,11 +13,15 @@ func main() {
 	globalFm := filemanager.New("prices.txt", "tax_included_prices.json")
 
 	for _, taxRate := range taxRates {
-		//fm := filemanager.New("prices.txt", fmt.Sprintf("prices_with_tax_%.0f.json", taxRate*100))
-		cmd := cmdmanager.New()
+		fm := filemanager.New("prices.txt", fmt.Sprintf("prices_with_tax_%.0f.json", taxRate*100))
+		// cmd := cmdmanager.New()
 		fmt.Printf("Calculating prices with tax rate: %.2f\n", taxRate)
-		job := prices.NewTaxIncludedPriceJob(cmd, taxRate)
-		job.Process()
+		job := prices.NewTaxIncludedPriceJob(fm, taxRate)
+		err := job.Process()
+		if err != nil {
+			fmt.Printf("Error processing job for tax rate %.2f: %v\n", taxRate, err)
+			continue
+		}
 		job.IOManager.WriteResult(job)
 		taxMap[fmt.Sprintf("%.2f", taxRate)] = *job
 	}
