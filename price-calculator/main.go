@@ -18,7 +18,7 @@ func main() {
 		job.Process()
 		fmt.Printf("Tax Rate: %.2f\n", taxRate)
 		fmt.Println("Price with taxes:", job.TaxIncludedPrices)
-		job.IOManager.WriteResult(job.TaxIncludedPrices)
+		job.IOManager.WriteResult(job)
 		taxMap[fmt.Sprintf("%.2f", taxRate)] = *job
 	}
 	fmt.Println(taxMap)
