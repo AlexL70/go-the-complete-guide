@@ -29,11 +29,12 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 	return nil
 }
 
-func (job *TaxIncludedPriceJob) Process(doneChan chan bool) {
-	job.LoadData()
-	// if err != nil {
-	// 	return err
-	// }
+func (job *TaxIncludedPriceJob) Process(doneChan chan bool, errChan chan error) {
+	err := job.LoadData()
+	if err != nil {
+		errChan <- fmt.Errorf("Error loading data: %w", err)
+		return
+	}
 	result := make(map[string]string)
 	for _, price := range job.InputPrices {
 		total := price * (1 + job.TaxRate)
