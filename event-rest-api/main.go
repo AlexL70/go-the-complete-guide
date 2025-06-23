@@ -1,6 +1,7 @@
 package main
 
 import (
+	"event-rest-api/db"
 	"event-rest-api/models"
 	"net/http"
 
@@ -8,6 +9,7 @@ import (
 )
 
 func main() {
+	db.InitDB()
 	var server = gin.Default()
 	server.GET("/events", getEvents)
 	server.POST("/events", createEvent)
