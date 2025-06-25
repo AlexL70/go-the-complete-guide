@@ -80,3 +80,25 @@ func updateEvent(context *gin.Context) {
 		"message": "Event updated successfully",
 	})
 }
+
+func deleteEvent(context *gin.Context) {
+	id_str := context.Param("id")
+	id, err := strconv.ParseInt(id_str, 10, 64)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid ID: %s. You must pass an integer value.", id_str)})
+		return
+	}
+	event, err := models.GetEventById(id)
+	if err != nil {
+		context.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+	err = event.Delete()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Event deleted successfully",
+	})
+}
