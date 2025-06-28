@@ -1,0 +1,7 @@
+POST http://localhost:8080/signup
+Accept: application/json
+
+{
+    "email": "some_email@some_server.com",
+    "password": "my_super_secure_password"
+}
