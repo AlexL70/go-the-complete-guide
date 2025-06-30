@@ -32,15 +32,16 @@ func (u *User) Save() error {
 	return err
 }
 
-func ValidateCredentials(email, password string) error {
-	var user User
+func (u *User) ValidateCredentials() error {
+	var userFromDB User
 	query := "SELECT id, email, password FROM users WHERE email = ?"
-	err := db.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.Password)
+	err := db.DB.QueryRow(query, u.Email).Scan(&userFromDB.ID, &userFromDB.Email, &userFromDB.Password)
 	if err != nil {
-		return fmt.Errorf("User with email %s not found: %w", email, err)
+		return fmt.Errorf("User with email %s not found: %w", u.Email, err)
 	}
-	if !utils.ComparePasswords(user.Password, password) {
-		return fmt.Errorf("Invalid credentials for user with email %s", email)
+	if !utils.ComparePasswords(userFromDB.Password, u.Password) {
+		return fmt.Errorf("Invalid credentials for user with email %s", u.Email)
 	}
+	u.ID = userFromDB.ID
 	return nil
 }

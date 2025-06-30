@@ -2,6 +2,7 @@ package routes
 
 import (
 	"event-rest-api/models"
+	"event-rest-api/utils"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,7 +20,7 @@ func signup(context *gin.Context) {
 		return
 	}
 
-	user.Save()
+	err = user.Save()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": fmt.Errorf("Could not save user in the DB: %w", err),
@@ -42,7 +43,7 @@ func login(context *gin.Context) {
 		})
 		return
 	}
-	err = models.ValidateCredentials(user.Email, user.Password)
+	err = user.ValidateCredentials()
 	if err != nil {
 		log.Println(fmt.Errorf("Invalid credentials for user with email %s: %w", user.Email, err))
 		context.JSON(http.StatusUnauthorized, gin.H{
@@ -51,7 +52,16 @@ func login(context *gin.Context) {
 		return
 	}
 	log.Printf("User with email %s logged in successfully.\n", user.Email)
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		log.Println(fmt.Errorf("Could not generate token for user with email %s: %w", user.Email, err))
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not generate token. Please try again later.",
+		})
+		return
+	}
 	context.JSON(http.StatusOK, gin.H{
 		"message": fmt.Sprintf("User with email %s logged in successfully", user.Email),
+		"token":   token,
 	})
 }

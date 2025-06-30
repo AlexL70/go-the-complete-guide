@@ -6,7 +6,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-const secretKey = "0fe83316-ebe0-45e1-bf50-2b3b7d1690c0"
+const secretKey = "0fe83316-ebe0-45e1-bf50-2b3b7d1690c0-6a36c876-026d-4f64-a525-a06a66a05dfa"
 
 // The GenerateToken function creates a JWT token with user email and a placeholder user ID.
 func GenerateToken(email string, userId int64) (string, error) {
@@ -16,5 +16,5 @@ func GenerateToken(email string, userId int64) (string, error) {
 		"exp":    time.Now().Add(4 * time.Hour), // Token expires in 4 hours
 	})
 
-	return token.SignedString([]byte("secretKey"))
+	return token.SignedString([]byte(secretKey))
 }
