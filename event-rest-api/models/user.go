@@ -3,6 +3,7 @@ package models
 import (
 	"event-rest-api/db"
 	"event-rest-api/utils"
+	"fmt"
 )
 
 type User struct {
@@ -29,4 +30,17 @@ func (u *User) Save() error {
 	userId, err := result.LastInsertId()
 	u.ID = userId
 	return err
+}
+
+func ValidateCredentials(email, password string) error {
+	var user User
+	query := "SELECT id, email, password FROM users WHERE email = ?"
+	err := db.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.Password)
+	if err != nil {
+		return fmt.Errorf("User with email %s not found: %w", email, err)
+	}
+	if !utils.ComparePasswords(user.Password, password) {
+		return fmt.Errorf("Invalid credentials for user with email %s", email)
+	}
+	return nil
 }
