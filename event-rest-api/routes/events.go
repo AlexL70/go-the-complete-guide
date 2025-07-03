@@ -2,7 +2,9 @@ package routes
 
 import (
 	"event-rest-api/models"
+	"event-rest-api/utils"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -40,15 +42,25 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
+	_, err := utils.ValidateToken(token)
+	if err != nil {
+		log.Printf("Error validating token: %w", err)
+		context.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization token is required"})
+		return
+	}
+
+	// email := (*claims)["email"].(string)
+	// userId := (*claims)["userId"].(int64)
+	var userId = int64(1) // Placeholder for user ID, replace with actual user ID extraction logic
+
 	var event models.Event
-	err := context.ShouldBindJSON(&event)
+	err = context.ShouldBindJSON(&event)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	event.ID = 1
-	event.UserID = 1
+	event.UserID = userId
 	err = event.Save()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
