@@ -42,7 +42,7 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
-	_, err := utils.ValidateToken(token)
+	claims, err := utils.ValidateToken(token)
 	if err != nil {
 		log.Printf("Error validating token: %w", err)
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization token is required"})
@@ -50,8 +50,8 @@ func createEvent(context *gin.Context) {
 	}
 
 	// email := (*claims)["email"].(string)
-	// userId := (*claims)["userId"].(int64)
-	var userId = int64(1) // Placeholder for user ID, replace with actual user ID extraction logic
+	userId := (*claims)["userId"].(float64)
+	fmt.Printf("User ID from token: %v\n", userId)
 
 	var event models.Event
 	err = context.ShouldBindJSON(&event)
@@ -60,7 +60,7 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
-	event.UserID = userId
+	event.UserID = int64(userId)
 	err = event.Save()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
