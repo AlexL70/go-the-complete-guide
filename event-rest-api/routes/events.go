@@ -56,9 +56,15 @@ func updateEvent(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid ID: %s. You must pass an integer value.", id_str)})
 		return
 	}
-	_, err = models.GetEventById(id)
+	originalEvent, err := models.GetEventById(id)
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	userId := context.GetInt64("userId")
+	if originalEvent.UserID != userId {
+		context.JSON(http.StatusForbidden, gin.H{"error": "You are not authorized to update this event, because you are not the owner."})
 		return
 	}
 
@@ -87,12 +93,19 @@ func deleteEvent(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid ID: %s. You must pass an integer value.", id_str)})
 		return
 	}
-	event, err := models.GetEventById(id)
+	originalEvent, err := models.GetEventById(id)
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-	err = event.Delete()
+
+	userId := context.GetInt64("userId")
+	if originalEvent.UserID != userId {
+		context.JSON(http.StatusForbidden, gin.H{"error": "You are not authorized to delete this event, because you are not the owner."})
+		return
+	}
+
+	err = originalEvent.Delete()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
