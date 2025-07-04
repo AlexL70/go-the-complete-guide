@@ -25,7 +25,7 @@ func Authenticate(context *gin.Context) {
 	email := (*claims)["email"].(string)
 	userId := (*claims)["userId"].(float64)
 
-	context.Set("userId", userId)
+	context.Set("userId", int64(userId))
 	context.Set("email", email)
 	context.Next()
 }
