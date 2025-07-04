@@ -51,4 +51,19 @@ CREATE TABLE IF NOT EXISTS events (
 	if err != nil {
 		panic(fmt.Errorf("Cannot create \"events\" table: %w", err))
 	}
+
+	createRegistrationsStmt := `
+CREATE TABLE IF NOT EXISTS registrations (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	event_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
+	FOREIGN KEY(event_id) REFERENCES events(id),
+	FOREIGN KEY(user_id) REFERENCES users(id)
+	UNIQUE(event_id, user_id)
+);
+`
+	_, err = DB.Exec(createRegistrationsStmt)
+	if err != nil {
+		panic(fmt.Errorf("Cannot create \"registrations\" table: %w", err))
+	}
 }
