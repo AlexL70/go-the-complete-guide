@@ -13,7 +13,10 @@ func registerForEvent(context *gin.Context) {
 	userId := context.GetInt64("userId")
 	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": fmt.Errorf("error parsing event ID: %w", err)})
+		context.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("error parsing event ID: %s", err)})
+		return
+	} else if eventId <= 0 {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "event ID must be a positive integer"})
 		return
 	}
 
@@ -25,7 +28,7 @@ func registerForEvent(context *gin.Context) {
 
 	err = event.Register(userId)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Errorf("error registering for event: %w", err)})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("error registering for event: %s", err)})
 		return
 	}
 
